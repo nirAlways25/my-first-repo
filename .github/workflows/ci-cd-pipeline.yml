@@ -31,9 +31,13 @@ jobs:
         run: |
           docker build -t my-demo-calculator:build .
 
+
+      - name: Set Build Version
+        run: echo "BUILD_VERSION=v1.0.${{ github.run_number }}" >> $GITHUB_ENV
+
       - name: Tag Docker Image with Build Number
         run: |
-          echo "BUILD_VERSION=v1.0.${{ github.run_number }}" >> $GITHUB_ENV
-          docker tag my-demo-calculator:build my-demo-calculator:${{ env.BUILD_VERSION }}
-          echo "Tagged image as my-demo-calculator:${{ env.BUILD_VERSION }}"
+            docker tag my-demo-calculator:build my-demo-calculator:${{ env.BUILD_VERSION }}
+                 echo "Tagged image as my-demo-calculator:${{ env.BUILD_VERSION }}"
+
 
