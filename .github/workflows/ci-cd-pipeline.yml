@@ -20,6 +20,10 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Install Jest
+        run: npm install --save-dev jest
+
+
       - name: Run unit tests
         run: npm test
 
