@@ -40,4 +40,20 @@ jobs:
             docker tag my-demo-calculator:build my-demo-calculator:${{ env.BUILD_VERSION }}
                  echo "Tagged image as my-demo-calculator:${{ env.BUILD_VERSION }}"
 
+      - name: Authenticate with GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{secrets.GCP_SA_KEY}}
+
+      - name: Configure Docker to use Artifact Registry
+        run: gcloud auth configure-docker ${{ secrets.GCP_REGION }}-docker.pkg.dev
+
+      - name: Tag Docker Image
+        run: |
+          docker tag my-demo-calculator:build ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/ci-cd-artifact-repository/my-demo-calculator:${{ env.BUILD_VERSION }}
+
+      - name: Push Docker Image
+        run: |
+         docker push ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/ci-cd-artifact-repository/my-demo-calculator:${{ env.BUILD_VERSION }}
+
 
