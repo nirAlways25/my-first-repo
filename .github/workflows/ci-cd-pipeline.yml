@@ -56,4 +56,16 @@ jobs:
         run: |
          docker push ${{ secrets.GCP_REGION }}-docker.pkg.dev/${{ secrets.GCP_PROJECT_ID }}/ci-cd-artifact-repository/my-demo-calculator:${{ env.BUILD_VERSION }}
 
+      - name: Install Nodemailer
+        run: npm install nodemailer --save
+        
+      - name: Send Success Email
+        env:
+            SMTP_SERVER: ${{ secrets.SMTP_SERVER }}
+            SMTP_PORT: ${{ secrets.SMTP_PORT }}
+            SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+            SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+            BUILD_VERSION: ${{ env.BUILD_VERSION }}
+        run: node send-email.js
+
 
